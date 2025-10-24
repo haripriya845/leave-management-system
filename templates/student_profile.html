@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #ffffff);
+        }
+
+        /* Back Button Styling */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            background: #f0f3ff;
+            color: #4a6cf7;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #4a6cf7;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .back-link span {
+            font-size: 18px;
+        }
+
+        .profile-container {
+            background: #fff;
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-header h2 {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .profile-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .details {
+            border-top: 2px solid #4a6cf7;
+            padding-top: 15px;
+        }
+
+        .details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .details span {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .details span.label {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .print-btn {
+            display: block;
+            width: 100%;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .print-btn:hover {
+            background: #3549c5;
+        }
+
+        @media print {
+            .print-btn, .back-link {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back Button -->
+    <a href="{% url 'studentdashboard' %}" class="back-link">
+        <span>←</span> Back to Student Dashboard
+    </a>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>{{ cr.name }}</h2>
+            <p>{{ cr.department }}</p>
+        </div>
+
+        <div class="details">
+            <div><span class="label">Student ID:</span><span>{{ cr.id }}</span></div>
+            <div><span class="label">Year:</span><span>{{ cr.year }}</span></div>
+            <div><span class="label">Email:</span><span>{{ cr.email }}</span></div>
+            <div><span class="label">Phone:</span><span>{{ cr.phone }}</span></div>
+            <div><span class="label">Username:</span><span>{{ cr.username }}</span></div>
+            <div><span class="label">Password:</span><span>{{ cr.password }}</span></div>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">Print Profile</button>
+    </div>
+
+</body>
+</html>

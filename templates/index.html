@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LMS Leave Management System</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px 30px; /* navbar height */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo a {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+    }
+
+    .menu {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .menu a {
+        color: white;
+        text-decoration: none;
+        padding: 12px 18px;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .menu a:hover {
+        background-color: #34495e;
+    }
+
+    /* Dropdown */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #34495e;
+        min-width: 140px;
+        top: 100%;
+        left: 0;
+        border-radius: 5px;
+        z-index: 1;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Center content */
+    .content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .content h1 {
+        font-size: 36px;
+        color: #2c3e50;
+    }
+
+    .content p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    /* Footer */
+    footer {
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        margin-top: auto; /* ensures footer stays at bottom */
+    }
+
+    footer a {
+        color: #ecf0f1;
+        text-decoration: none;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+        .menu {
+            gap: 10px;
+        }
+
+        .content h1 {
+            font-size: 28px;
+        }
+
+        .content p {
+            font-size: 16px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .menu a {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .content h1 {
+            font-size: 24px;
+        }
+
+        .content p {
+            font-size: 14px;
+        }
+
+        .dropdown-content {
+            min-width: 100px;
+        }
+    }
+</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#">LMS</a>
+        </div>
+
+        <div class="menu">
+            <a href="#">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Login ▼</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'studentlogin' %}">Student Login</a>
+                    <a href="{% url 'teacherlogin' %}">Teacher Login</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Register ▼</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'studentregister' %}">Student Registration</a>
+                    <a href="{% url 'teacherregister' %}">Teacher Registration</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Center content -->
+    <div class="content">
+        <div>
+            <h1>Welcome to LMS Leave Management System</h1>
+            <p>Manage your leaves efficiently, whether you are a student or a teacher.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LMS Leave Management System | <a href="#">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

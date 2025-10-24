@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #ffffff);
+        }
+
+        /* Back Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            background: #f0f3ff;
+            color: #4a6cf7;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: #4a6cf7;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Form Container */
+        .form-container {
+            background: #fff;
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #4a6cf7;
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #3549c5;
+        }
+
+        @media print {
+            .back-link {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'studentdashboard' %}" class="back-link">
+        <span>←</span> Back to Student Dashboard
+    </a>
+
+    <div class="form-container">
+        <h2>Apply Leave</h2>
+
+        <form action="{% url 'apply_leave' %}" method="POST">
+            {% csrf_token %}
+
+            <label for="name">Student Name</label>
+            <input type="text" id="name" name="name" value="{{ cr.name }}" readonly>
+
+            <label for="student_id">Student ID</label>
+            <input type="text" id="student_id" name="student_id" value="{{ cr.id }}" readonly>
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Enter subject of leave" required>
+
+            <label for="content">Reason / Description</label>
+            <textarea id="content" name="content" placeholder="Explain your reason for leave..." required></textarea>
+
+            <button type="submit" class="submit-btn">Submit Leave Request</button>
+        </form>
+    </div>
+
+</body>
+</html>
