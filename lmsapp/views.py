@@ -93,8 +93,25 @@ def student_profile(request):
     cr = student.objects.get(id=student_id)   # or student_id=student_id, depending on your model field name
     return render(request, 'student_profile.html', {'cr': cr})
 
+from .models import student, teacher, Leave  # Add Leave here
+
 def apply_leave(request):
-    return render(request,"apply_leave.html")
+    student_id = request.session.get('id')
+    if not student_id:
+        messages.error(request, "You must login first")
+        return redirect('studentlogin')
+
+    cr = student.objects.get(id=student_id)
+
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        content = request.POST.get('content')
+        Leave.objects.create(student=cr, subject=subject, content=content)
+        messages.success(request, "Leave request submitted successfully!")
+        return redirect('studentdashboard')
+
+    return render(request, "apply_leave.html", {'cr': cr})
+
 
 def teacherlogin(request):
     return render(request, 'teacherlogin.html')
@@ -137,3 +154,33 @@ def teacherdashboard(request):
     id = request.session.get('id')
     name = request.session.get('name')
     return render(request,'teacherdashboard.html',{'id':id,'name':name})
+
+
+def teacherlogout(request):
+    logout(request)
+    return redirect('teacherlogin')
+
+
+def teacher_profile(request):
+    teacher_id = request.session.get('id')
+    cr = teacher.objects.get(id=teacher_id)   # or student_id=student_id, depending on your model field name
+    return render(request, 'teacher_profile.html', {'cr': cr})
+
+def teacher_edit(request):
+    teacher_id = request.session.get('id')
+    if not teacher_id:
+        messages.error(request, "You must login first")
+        return redirect('teacherlogin')
+
+    teach = teacher.objects.get(id=teacher_id)
+    if request.method == 'POST':
+        teach.name = request.POST.get('name')
+        teach.email = request.POST.get('email')
+        teach.subject = request.POST.get('subject')
+        teach.phone = request.POST.get('phone')
+        teach.username = request.POST.get('username')
+        teach.password = request.POST.get('password')
+        teach.department = request.POST.get('department')
+        teach.save()
+        messages.success(request, "Profile updated successfully!")
+    return render(request, 'teacher_edit.html', {'teach': teach})

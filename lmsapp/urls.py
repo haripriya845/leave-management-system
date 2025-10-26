@@ -15,6 +15,11 @@ urlpatterns = [
     path('teacherregister/', views.teacherregister, name='teacherregister'),
     path('user_teacherlogin/', views.user_teacherlogin, name='user_teacherlogin'),
     path('teacherdashboard/', views.teacherdashboard, name='teacherdashboard'),
+    path('teacherlogout/', views.teacherlogout, name='teacherlogout'),
+    path('teacher_profile/',views.teacher_profile,name='teacher_profile'),
+    path('teacher_edit/',views.teacher_edit,name='teacher_edit'),
+    path('apply_leave/', views.apply_leave, name='apply_leave'),
+
 
 
 ]

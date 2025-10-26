@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,6 +30,7 @@
         .navbar-links {
             display: flex;
             gap: 15px;
+            align-items: center;
         }
 
         .navbar a {
@@ -37,10 +38,59 @@
             text-decoration: none;
             font-weight: bold;
             transition: color 0.2s ease;
+            padding: 8px;
         }
 
         .navbar a:hover {
             color: #ffd700;
+        }
+
+        /* Dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+        }
+
+        .dropbtn:hover {
+            color: #ffd700;
+        }
+
+        /* Dropdown content */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #444;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
 
         /* Content */
@@ -65,11 +115,20 @@
     <nav class="navbar">
         <h2>Teacher Dashboard</h2>
         <div class="navbar-links">
-            <a href="">Profile</a>
-            <a href="">Edit</a>
-            <a href="">Logout</a>
-            <a href="">Students details</a>
-            <a href="">Leave details</a>
+            <a href="{% url 'teacher_profile' %}">Profile</a>
+            <a href="{% url 'teacher_edit' %}">Edit</a>
+
+            <!-- Dropdown starts here -->
+            <div class="dropdown">
+                <button class="dropbtn">Details ▾</button>
+                <div class="dropdown-content">
+                    <a href="">Student Details</a>
+                    <a href="">Leave Details</a>
+                </div>
+            </div>
+            <!-- Dropdown ends here -->
+
+            <a href="{% url 'teacherlogout' %}">Logout</a>
         </div>
     </nav>
 
