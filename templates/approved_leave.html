@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approved Leaves - {{ department }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { text-align: center; margin-top: 20px; }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: center;
+        }
+        th { background-color: #333; color: white; }
+        tr:nth-child(even) td { background-color: #f1f1f1; }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 8px 16px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-btn:hover { background-color: #555; }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'leave_details' %}" class="back-btn">← Back to Pending Requests</a>
+    <h2>Approved Leaves ({{ department }})</h2>
+
+    {% if leaves %}
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Student ID</th>
+            <th>Department</th>
+            <th>Subject</th>
+            <th>Date Approved</th>
+            <th>Time Approved</th>
+        </tr>
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.student.name }}</td>
+            <td>{{ leave.student.id }}</td>
+            <td>{{ leave.student.department }}</td>
+            <td>{{ leave.subject }}</td>
+            <td>{{ leave.date_applied }}</td>
+            <td>{{ leave.time_applied }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p style="text-align:center;">No approved leaves yet.</p>
+    {% endif %}
+
+</body>
+</html>

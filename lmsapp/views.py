@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import student
-from .models import teacher
+from .models import teacher,leave
 from django.contrib import messages
 from django.contrib.auth import authenticate,login as log, logout
 
@@ -93,7 +93,6 @@ def student_profile(request):
     cr = student.objects.get(id=student_id)   # or student_id=student_id, depending on your model field name
     return render(request, 'student_profile.html', {'cr': cr})
 
-from .models import student, teacher, Leave  # Add Leave here
 
 def apply_leave(request):
     student_id = request.session.get('id')
@@ -106,7 +105,7 @@ def apply_leave(request):
     if request.method == 'POST':
         subject = request.POST.get('subject')
         content = request.POST.get('content')
-        Leave.objects.create(student=cr, subject=subject, content=content)
+        leave.objects.create(student=cr, subject=subject, content=content)
         messages.success(request, "Leave request submitted successfully!")
         return redirect('studentdashboard')
 
@@ -184,3 +183,57 @@ def teacher_edit(request):
         teach.save()
         messages.success(request, "Profile updated successfully!")
     return render(request, 'teacher_edit.html', {'teach': teach})
+
+
+def leave_details(request):
+    teacher_id = request.session.get('id')
+
+    if not teacher_id:
+        return redirect('teacherlogin')
+
+    teacher_obj = teacher.objects.get(id=teacher_id)
+
+    leaves = leave.objects.filter(student__department=teacher_obj.department,status='Pending').order_by('-date_applied', '-time_applied')
+
+    return render(request, 'leave_details.html', {'leaves': leaves, 'department': teacher_obj.department})
+
+
+def student_details(request):
+    teacher_id = request.session.get('id')
+
+    if not teacher_id:
+        return redirect('teacherlogin')
+
+    teacher_obj = teacher.objects.get(id=teacher_id)
+
+    students = student.objects.filter(department=teacher_obj.department).order_by('name')
+
+    return render(request, 'student_details.html', {
+        'students': students,
+        'department': teacher_obj.department
+    })
+
+def approved_leave(request):
+    teacher_id = request.session.get('id')
+    if not teacher_id:
+        return redirect('teacherlogin')
+
+    teacher_obj = teacher.objects.get(id=teacher_id)
+    approved_leaves = leave.objects.filter(student__department=teacher_obj.department, status='Approved')
+
+    return render(request, 'approved_leave.html', {
+        'leaves': approved_leaves,
+        'department': teacher_obj.department
+    })
+
+def approve_leave(request, id):
+    leave_obj = get_object_or_404(leave, id=id)
+    leave_obj.status = 'Approved'
+    leave_obj.save()
+    return redirect('leave_details')
+
+
+def delete_leave(request, id):
+    leave_obj = get_object_or_404(leave, id=id)
+    leave_obj.delete()
+    return redirect('leave_details')

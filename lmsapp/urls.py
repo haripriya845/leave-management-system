@@ -19,7 +19,10 @@ urlpatterns = [
     path('teacher_profile/',views.teacher_profile,name='teacher_profile'),
     path('teacher_edit/',views.teacher_edit,name='teacher_edit'),
     path('apply_leave/', views.apply_leave, name='apply_leave'),
-
-
+    path('leave_details/', views.leave_details, name='leave_details'),
+    path('student_details/', views.student_details, name='student_details'),
+    path('approve_leave/<int:id>/', views.approve_leave, name='approve_leave'),
+    path('delete_leave/<int:id>/', views.delete_leave, name='delete_leave'),
+    path('approved_leave/', views.approved_leave, name='approved_leave'),
 
 ]

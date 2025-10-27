@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests - {{ department }} Department</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { text-align: center; margin-top: 20px; }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 8px 16px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background-color: #555; }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th { background-color: #333; color: white; }
+
+        tr:nth-child(even) td { background-color: #f1f1f1; }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .approve-btn { background-color: #28a745; }
+        .approve-btn:hover { background-color: #218838; }
+
+        .delete-btn { background-color: #dc3545; }
+        .delete-btn:hover { background-color: #c82333; }
+
+        .approved-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .approved-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'teacherdashboard' %}" class="back-btn">← Back to Dashboard</a>
+    <h2>Pending Leave Requests ({{ department }})</h2>
+
+    {% if leaves %}
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Student ID</th>
+            <th>Department</th>
+            <th>Subject</th>
+            <th>Date Applied</th>
+            <th>Time Applied</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.student.name }}</td>
+            <td>{{ leave.student.id }}</td>
+            <td>{{ leave.student.department }}</td>
+            <td>{{ leave.subject }}</td>
+            <td>{{ leave.date_applied }}</td>
+            <td>{{ leave.time_applied }}</td>
+            <td>
+                <a href="{% url 'approve_leave' leave.id %}" class="btn approve-btn">Approve</a>
+                <a href="{% url 'delete_leave' leave.id %}" class="btn delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p style="text-align:center;">No pending leave requests from your department.</p>
+    {% endif %}
+
+    <a href="{% url 'approved_leave' %}" class="approved-link">View Approved Leaves →</a>
+
+</body>
+</html>

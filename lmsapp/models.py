@@ -27,15 +27,15 @@ class teacher(models.Model):
 
 
 
-class Leave(models.Model):
+class leave(models.Model):
 
     student = models.ForeignKey(student, on_delete=models.CASCADE)
-    
+
     subject = models.CharField(max_length=100)
     content = models.TextField()
     date_applied = models.DateField(auto_now_add=True)
     time_applied = models.TimeField(auto_now_add=True)
-
+    status = models.CharField(max_length=20, default='Pending')
     def __str__(self):
         return f"{self.student.name} - {self.subject}"
 
