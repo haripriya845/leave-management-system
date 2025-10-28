@@ -24,5 +24,6 @@ urlpatterns = [
     path('approve_leave/<int:id>/', views.approve_leave, name='approve_leave'),
     path('delete_leave/<int:id>/', views.delete_leave, name='delete_leave'),
     path('approved_leave/', views.approved_leave, name='approved_leave'),
+    path('student_leaveview/', views.student_leaveview, name='student_leaveview'),
 
 ]

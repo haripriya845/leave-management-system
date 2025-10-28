@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Leave Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-btn {
+            display: block;
+            width: 180px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #555;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .status-approved {
+            color: green;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+        .status-rejected {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>My Leave Requests</h2>
+
+    <a href="{% url 'studentdashboard' %}" class="back-btn">← Back to Dashboard</a>
+
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Content</th>
+            <th>Date Applied</th>
+            <th>Time Applied</th>
+            <th>Status</th>
+        </tr>
+
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.subject }}</td>
+            <td>{{ leave.content }}</td>
+            <td>{{ leave.date_applied }}</td>
+            <td>{{ leave.time_applied }}</td>
+            <td>
+                {% if leave.status == "Approved" %}
+                    <span class="status-approved">Approved</span>
+                {% elif leave.status == "Rejected" %}
+                    <span class="status-rejected">Rejected</span>
+                {% else %}
+                    <span class="status-pending">Pending</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No leave requests found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

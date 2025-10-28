@@ -79,7 +79,8 @@
             <th>Subject</th>
             <th>Date Applied</th>
             <th>Time Applied</th>
-            <th>Actions</th>
+            <th>Status Approve</th>
+            <th>Status reject</th>
         </tr>
 
         {% for leave in leaves %}
@@ -92,7 +93,11 @@
             <td>{{ leave.time_applied }}</td>
             <td>
                 <a href="{% url 'approve_leave' leave.id %}" class="btn approve-btn">Approve</a>
+
+            </td>
+            <td>
                 <a href="{% url 'delete_leave' leave.id %}" class="btn delete-btn">Delete</a>
+            
             </td>
         </tr>
         {% endfor %}

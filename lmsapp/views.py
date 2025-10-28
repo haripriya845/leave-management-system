@@ -3,6 +3,7 @@ from .models import student
 from .models import teacher,leave
 from django.contrib import messages
 from django.contrib.auth import authenticate,login as log, logout
+from django.core.mail import send_mail
 
 
 def home(request):
@@ -106,7 +107,7 @@ def apply_leave(request):
         subject = request.POST.get('subject')
         content = request.POST.get('content')
         leave.objects.create(student=cr, subject=subject, content=content)
-        messages.success(request, "Leave request submitted successfully!")
+        # messages.success(request, "Leave request submitted successfully!")
         return redirect('studentdashboard')
 
     return render(request, "apply_leave.html", {'cr': cr})
@@ -135,19 +136,23 @@ def user_teacherlogin(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        cr = teacher.objects.filter(username=username, password=password)
-        if cr.exists():
-            user_details = teacher.objects.get(username=username, password=password)
-            request.session['id'] = user_details.id
-            request.session['name'] = user_details.name
-            
+        try:
+            teacher_obj = teacher.objects.get(username=username, password=password)
 
+            if not teacher_obj.is_approved:
+                return render(request, 'teacherlogin.html', {'error': 'Your account is awaiting admin approval.'})
+
+            request.session['id'] = teacher_obj.id
+            request.session['name'] = teacher_obj.name
+            request.session['email'] = teacher_obj.email
 
             return redirect('teacherdashboard')
-        else:
-            return render(request, 'teacherlogin.html', {'error': 'Invalid Email or Password'})
-    
+
+        except teacher.DoesNotExist:
+            return render(request, 'teacherlogin.html', {'error': 'Invalid username or password'})
+
     return render(request, 'teacherlogin.html')
+
 
 def teacherdashboard(request):
     id = request.session.get('id')
@@ -162,7 +167,7 @@ def teacherlogout(request):
 
 def teacher_profile(request):
     teacher_id = request.session.get('id')
-    cr = teacher.objects.get(id=teacher_id)   # or student_id=student_id, depending on your model field name
+    cr = teacher.objects.get(id=teacher_id)   
     return render(request, 'teacher_profile.html', {'cr': cr})
 
 def teacher_edit(request):
@@ -230,10 +235,38 @@ def approve_leave(request, id):
     leave_obj = get_object_or_404(leave, id=id)
     leave_obj.status = 'Approved'
     leave_obj.save()
+    student_email = leave_obj.student.email  
+
+    send_mail(
+        subject="Leave Approved",
+        message=f"Hi {leave_obj.student.name},\n\n"
+                f"Your leave request for '{leave_obj.subject}' has been approved.\n\n"
+                "Regards,\nYour Teacher",
+        from_email="haripriyaviswanathan78@gmail.com",
+        recipient_list=[student_email],
+        fail_silently=False,
+    )
     return redirect('leave_details')
 
 
 def delete_leave(request, id):
     leave_obj = get_object_or_404(leave, id=id)
-    leave_obj.delete()
+    leave_obj.status = 'Rejected'
+    leave_obj.save()
+    student_email = leave_obj.student.email  
+
+    send_mail(
+        subject="Leave Rejected",
+        message=f"Hi {leave_obj.student.name},\n\n"
+                f"Your leave request for '{leave_obj.subject}' has been rejected.\n\n"
+                "Regards,\nYour Teacher",
+        from_email="haripriyaviswanathan78@gmail.com",
+        recipient_list=[student_email],
+        fail_silently=False,
+    )
     return redirect('leave_details')
+
+def student_leaveview(request):
+    current_student = student.objects.get(id=request.session['id'])
+    leaves = leave.objects.filter(student=current_student)
+    return render(request, 'student_leaveview.html', {'leaves': leaves})
