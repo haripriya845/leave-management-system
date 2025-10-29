@@ -4,49 +4,65 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LMS Leave Management System</title>
+
 <style>
-    body {
+    /* Reset */
+    * {
+        box-sizing: border-box;
         margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f0f2f5;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8fafc;
+        color: #2c3e50;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        overflow-x: hidden; /* prevent horizontal scroll */
     }
 
     /* Navbar */
     .navbar {
-        background-color: #2c3e50;
-        color: white;
-        padding: 20px 30px; /* navbar height */
+        background-color: #1e293b;
+        color: #fff;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 15px 40px;
+        flex-wrap: wrap;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1000;
     }
 
     .logo a {
         font-size: 24px;
-        font-weight: bold;
-        color: white;
+        font-weight: 600;
+        color: #facc15;
         text-decoration: none;
+        letter-spacing: 0.5px;
     }
 
     .menu {
         display: flex;
         align-items: center;
         gap: 20px;
+        flex-wrap: wrap;
     }
 
     .menu a {
-        color: white;
+        color: #fff;
         text-decoration: none;
-        padding: 12px 18px;
-        border-radius: 5px;
-        transition: background 0.3s;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: background-color 0.2s ease;
     }
 
     .menu a:hover {
-        background-color: #34495e;
+        background-color: #334155;
     }
 
     /* Dropdown */
@@ -57,25 +73,32 @@
     .dropdown-content {
         display: none;
         position: absolute;
-        background-color: #34495e;
-        min-width: 140px;
-        top: 100%;
+        background-color: #334155;
+        top: 110%;
         left: 0;
-        border-radius: 5px;
-        z-index: 1;
-        box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        border-radius: 6px;
+        overflow: hidden;
+        min-width: 170px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        z-index: 9999; /* ensures dropdown stays above everything */
     }
 
     .dropdown-content a {
         display: block;
-        padding: 10px 15px;
+        padding: 10px 14px;
+        color: #e2e8f0;
+        font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #475569;
     }
 
     .dropdown:hover .dropdown-content {
         display: block;
     }
 
-    /* Center content */
+    /* Content */
     .content {
         flex: 1;
         display: flex;
@@ -85,65 +108,109 @@
         padding: 60px 20px;
     }
 
+    .content-box {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 50px 60px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        max-width: 700px;
+        width: 100%;
+    }
+
     .content h1 {
         font-size: 36px;
-        color: #2c3e50;
+        color: #1e293b;
+        margin-bottom: 20px;
+        font-weight: 600;
     }
 
     .content p {
-        font-size: 18px;
-        color: #555;
+        font-size: 17px;
+        color: #475569;
+        line-height: 1.6;
     }
 
     /* Footer */
     footer {
-        background-color: #2c3e50;
-        color: white;
+        background-color: #1e293b;
+        color: #e2e8f0;
         text-align: center;
-        padding: 15px 0;
-        margin-top: auto; /* ensures footer stays at bottom */
+        padding: 15px 10px;
+        font-size: 14px;
+        margin-top: auto;
     }
 
     footer a {
-        color: #ecf0f1;
+        color: #facc15;
         text-decoration: none;
     }
 
+    footer a:hover {
+        color: #fde047;
+    }
+
     /* Responsive */
-    @media screen and (max-width: 768px) {
+    @media (max-width: 900px) {
+        .navbar {
+            padding: 15px 20px;
+        }
         .menu {
             gap: 10px;
         }
-
-        .content h1 {
-            font-size: 28px;
+        .content-box {
+            padding: 40px 30px;
         }
-
+        .content h1 {
+            font-size: 30px;
+        }
         .content p {
-            font-size: 16px;
+            font-size: 15px;
         }
     }
 
-    @media screen and (max-width: 480px) {
+    @media (max-width: 600px) {
+        .navbar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .menu {
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 10px;
+        }
+
         .menu a {
+            width: 100%;
+        }
+
+        .dropdown-content {
+            position: static;
+            width: 100%;
+            box-shadow: none;
+            background-color: #475569;
+        }
+
+        .dropdown-content a {
             padding: 8px 12px;
-            font-size: 14px;
         }
 
         .content h1 {
-            font-size: 24px;
+            font-size: 26px;
         }
 
         .content p {
             font-size: 14px;
         }
 
-        .dropdown-content {
-            min-width: 100px;
+        .content-box {
+            padding: 30px 20px;
         }
     }
 </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -172,11 +239,11 @@
         </div>
     </nav>
 
-    <!-- Center content -->
+    <!-- Content -->
     <div class="content">
-        <div>
+        <div class="content-box">
             <h1>Welcome to LMS Leave Management System</h1>
-            <p>Manage your leaves efficiently, whether you are a student or a teacher.</p>
+            <p>Manage your leaves efficiently, whether you are a student or a teacher. LMS provides a simplified, transparent, and paperless system for handling leave requests with ease.</p>
         </div>
     </div>
 
